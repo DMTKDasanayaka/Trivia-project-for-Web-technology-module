@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TriviaStorm - Ultimate Quiz Platform</title>
+<<<<<<< HEAD
+    
+    <!-- MathJax for rendering LaTeX mathematical equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+=======
+>>>>>>> 76235c4fb5c59ee946f2fd536b1cf9a64a4bfb1a
+    <style>
+        /* CSS Variables & Reset */
+        :root {
+            --primary-color: #1a2b42;
+            --primary-dark: #0f1a29;
+            --accent-color: #ff9900;
+            --accent-hover: #e08800;
+            --bg-color: #63bd97;
+            --card-bg: #98e4ab;
+            --border-color: #d1d9e6;
+            --text-color: #1e293b;
+            --footer-bg: #e2e8f0;
+            --timer-color: #ef4444;
+            --success-color: #10b981;
+            --info-color: #3b82f6;
+            --purple-color: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .brand-logo {
+            height: 48px;
+            width: auto;
+            border-radius: 6px;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a, nav button {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover, nav button:hover {
+            background-color: #f1f5f9;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color) !important;
+            padding: 0.4rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color) !important;
+            color: #fff !important;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #fff !important;
+            padding: 0.5rem 1.2rem !important;
+            border: none !important;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--info-color);
+            color: #fff !important;
+            padding: 0.5rem 1.2rem !important;
+            border: none !important;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        /* Main Container Views */
+        main {
+            flex: 1;
+            max-width: 1100px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .view-section {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Landing Page */
+        .landing-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .landing-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .hub-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            background: #fafafa;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: left;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .hub-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .hub-card ul {
+            list-style: none;
+            margin-bottom: 1.2rem;
+        }
+
+        .hub-card li {
+            padding: 0.3rem 0;
+            color: #475569;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Quiz View */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge-tag {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .timer-badge {
+            background-color: var(--timer-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: left;
+            margin-top: 1rem;
+            background-color: #fafafa;
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.85rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            background-color: #f1f5f9;
+        }
+
+        .option-item.selected {
+            border-color: var(--info-color);
+            background-color: #eff6ff;
+        }
+
+        /* Flashcards */
+        .flashcard-container {
+            perspective: 1000px;
+            max-width: 550px;
+            margin: 2rem auto;
+            min-height: 250px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 250px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 2px solid var(--accent-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            transition: transform 0.4s;
+        }
+
+        /* Live Room / Battles */
+        .battle-arena {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .player-box {
+            border: 2px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .player-box.user {
+            border-color: var(--accent-color);
+            background: #fffbeb;
+        }
+
+        .score-big {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Certificate Generator */
+        .certificate-preview {
+            border: 10px double var(--primary-color);
+            padding: 3rem 2rem;
+            background: #fffdfa;
+            margin-top: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Forms & Tables */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+        .leaderboard-table th {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+ <!-- Header Navigation -->
+    <header>
+        <div class="brand" onclick="switchView('view-landing')">
+            <img src="logo.PNG" alt="TriviaStorm Logo" class="brand-logo" onerror="this.style.display='none'">
+            <span class="brand-name">TriviaStorm</span>
+        </div>
+        <nav id="navLinks">
+            <!-- Dynamic Navigation Links -->
+        </nav>
+    </header>
+
+    <!-- Main Content Views -->
+    <main>
+        
+        <!-- View 1: Landing Page -->
+        <section id="view-landing" class="view-section active">
+            <div class="landing-hero">
+                <h1 class="landing-title">TRIVIA STORM HUB</h1>
+                <p class="subtitle">Dynamic Quizzes • Live Tracking & Battles • Student Hub & Academic Prep</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary" style="font-size: 1.1rem; padding: 0.8rem 2rem;" onclick="startDailyChallenge()">⚡ Daily Storm Challenge</button>
+                    <button class="btn-secondary" style="font-size: 1.1rem; padding: 0.8rem 2rem;" onclick="switchView('view-custom-quiz')">🛠 Custom Quiz Builder</button>
+                </div>
+            </div>
+
+            <!-- Features Hub Overview -->
+            <div class="hub-grid">
+                <div class="hub-card">
+                    <h3>🎯 Dynamic Quizzes</h3>
+                    <ul>
+                        <li>✨ Adaptive Difficulty Logic</li>
+                        <li>🔀 Randomized Question Bank & Shuffle</li>
+                        <li>🏷️ Category Filter & Custom Quiz</li>
+                        <li>⚡ Daily Storm Challenge</li>
+                    </ul>
+                    <button class="btn-outline" style="width: 100%;" onclick="switchView('view-custom-quiz')">Explore Quiz Engine</button>
+                </div>
+
+                <div class="hub-card">
+                    <h3>📡 Live Tracking</h3>
+                    <ul>
+                        <li>🏆 Real-Time Leaderboard</li>
+                        <li>⚔️ Live Quiz Battle (1v1 & Multiplayer)</li>
+                        <li>📊 Speed & Accuracy Analysis</li>
+                        <li>🚪 Live Quiz Room Hub</li>
+                    </ul>
+                    <button class="btn-outline" style="width: 100%;" onclick="switchView('view-live-tracking')">Go to Live Arena</button>
+                </div>
+
+                <div class="hub-card">
+                    <h3>🎓 Student Hub</h3>
+                    <ul>
+                        <li>🎴 Subject-Wise Flashcards</li>
+                        <li>📚 Study Notes & Explanations</li>
+                        <li>🗺️ Mind/Map Prep Module</li>
+                        <li>🎖️ Badge & Certificate Generator</li>
+                    </ul>
+                    <button class="btn-outline" style="width: 100%;" onclick="switchView('view-student-hub')">Open Student Hub</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 2: Custom Quiz Builder -->
+        <section id="view-custom-quiz" class="view-section">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🛠️ Custom Quiz Builder & Categories</h2>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Configure your personalized quiz with adaptive difficulty and category filters.</p>
+
+            <form onsubmit="handleCustomQuizStart(event)" style="max-width: 600px; margin: 0 auto;">
+                <div class="form-group">
+                    <label>Select Category Filter:</label>
+                    <select id="quizCategory">
+                        <option value="All">All Categories (Random Bank)</option>
+                        <option value="C Programming & Web">C Programming & Web Tech</option>
+                        <option value="Computer Science">Computer Science & Data Structures</option>
+                        <option value="Physics & Mechanics">Physics & Mechanics (g = 10 m/s²)</option>
+                        <option value="Mathematics">Mathematics, Algebra & Calculus</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Adaptive Difficulty Level:</label>
+                    <select id="quizDifficulty">
+                        <option value="Adaptive">Dynamic / Adaptive (Auto adjusts)</option>
+                        <option value="Easy">Beginner / Easy</option>
+                        <option value="Medium">Intermediate / Medium</option>
+                        <option value="Hard">Advanced / Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Number of Questions:</label>
+                    <select id="quizQuestionCount">
+                        <option value="5">5 Questions (Speed Run)</option>
+                        <option value="10" selected>10 Questions (Standard)</option>
+                        <option value="15">15 Questions (Deep Dive)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1; padding: 0.8rem;">Start Custom Quiz 🚀</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- View 3: Active Quiz View -->
+        <section id="view-quiz" class="view-section">
+            <div class="quiz-header">
+                <div>Player: <strong class="user-display-name">Alex</strong> | Score: <span id="currentScore">0</span> pts</div>
+                <div><span class="badge-tag" id="currentCatBadge">Web Dev</span> <span class="badge-tag" id="currentDiffBadge">Adaptive</span></div>
+                <div class="timer-badge">⏱️ <span id="timer">02:00</span></div>
+            </div>
+
+            <div class="question-card">
+                <div style="display: flex; justify-content: space-between; color: #64748b; margin-bottom: 0.5rem;">
+                    <span id="qNumTag">Q1 of 10</span>
+                    <span id="speedMetric">Avg Speed: 0.0s/q</span>
+                </div>
+                <h2 style="color: var(--primary-color); font-size: 1.2rem;" id="questionText">Loading question...</h2>
+
+                <ul class="options-list" id="optionsContainer">
+                    <!-- Dynamic Options -->
+                </ul>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn-outline" onclick="toggleHint()" id="hintBtn">💡 Show Hint / Explanation Note</button>
+                    <button class="btn-primary" id="nextBtn" onclick="submitAnswer()">Submit Answer &rarr;</button>
+                </div>
+                <div id="explanationNote" style="display: none; margin-top: 1rem; padding: 0.8rem; background: #e0f2fe; border-radius: 6px; font-size: 0.9rem; color: #0369a1;"></div>
+            </div>
+        </section>
+
+        <!-- View 4: Live Tracking & Battle Arena -->
+        <section id="view-live-tracking" class="view-section">
+            <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">📡 Live Tracking & Live Quiz Room</h2>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Real-time leaderboards, speed & accuracy analytics, and 1-vs-1 live battles.</p>
+
+            <div style="display: flex; gap: 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; flex-wrap: wrap;">
+                <button class="btn-outline" onclick="switchLiveTab('leaderboard')">🏆 Real-Time Leaderboard</button>
+                <button class="btn-outline" onclick="switchLiveTab('battle')">⚔️ Live Quiz Battle (1v1)</button>
+                <button class="btn-outline" onclick="switchLiveTab('analytics')">📊 Speed & Accuracy Analysis</button>
+            </div>
+
+            <!-- Tab 1: Realtime Leaderboard -->
+            <div id="tab-leaderboard">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Category</th>
+                            <th>Score</th>
+                            <th>Accuracy</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="liveLeaderboardBody">
+                        <tr><td>1st 🥇</td><td>Kavindu_99</td><td>Computer Science</td><td>150 pts</td><td>100%</td><td>🟢 Live Online</td></tr>
+                        <tr><td>2nd 🥈</td><td>Sarah_Dev</td><td>C Programming</td><td>140 pts</td><td>93%</td><td>🟢 In Quiz Room #2</td></tr>
+                        <tr><td>3rd 🥉</td><td><span class="user-display-name">Alex</span> (You)</td><td>Mathematics</td><td>120 pts</td><td>85%</td><td>🟢 Live Active</td></tr>
+                        <tr><td>4th</td><td>Nimal_P</td><td>Physics & Science</td><td>110 pts</td><td>80%</td><td>⚪ Offline</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 2: Live Quiz Battle -->
+            <div id="tab-battle" style="display: none;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <span class="badge-tag" style="background: #fee2e2; color: #991b1b; font-size: 1rem; padding: 0.4rem 1rem;">🔥 LIVE 1-vs-1 MULTIPLAYER BATTLE ROOM #104</span>
+                </div>
+                <div class="battle-arena">
+                    <div class="player-box user">
+                        <h3>You (<span class="user-display-name">Alex</span>)</h3>
+                        <div class="score-big" id="p1Score">80</div>
+                        <p style="color: #059669;">Accuracy: 8/8</p>
+                    </div>
+                    <div class="player-box">
+                        <h3>Opponent (Sarah_Dev)</h3>
+                        <div class="score-big" id="p2Score">70</div>
+                        <p style="color: #059669;">Accuracy: 7/8</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button class="btn-primary" onclick="simulateBattleRound()">Simulate Next Round ⚔️</button>
+                </div>
+            </div>
+
+            <!-- Tab 3: Speed & Analytics -->
+            <div id="tab-analytics" style="display: none;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px; text-align: center;">
+                        <h4 style="color: #64748b;">Average Speed</h4>
+                        <p style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">3.8s / question</p>
+                    </div>
+                    <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px; text-align: center;">
+                        <h4 style="color: #64748b;">Overall Accuracy</h4>
+                        <p style="font-size: 2rem; font-weight: bold; color: var(--success-color);">92.0%</p>
+                    </div>
+                    <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px; text-align: center;">
+                        <h4 style="color: #64748b;">Strongest Domain</h4>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--purple-color);">C & Data Structures</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 5: Student Hub -->
+        <section id="view-student-hub" class="view-section">
+            <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">🎓 Student Hub & Learning Modules</h2>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Subject flashcards, study notes, map prep, forums, and certificate generator.</p>
+
+            <div style="display: flex; gap: 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; flex-wrap: wrap;">
+                <button class="btn-outline" onclick="switchHubTab('flashcards')">🎴 Subject Flashcards</button>
+                <button class="btn-outline" onclick="switchHubTab('notes')">📚 Study Notes & Explanations</button>
+                <button class="btn-outline" onclick="switchHubTab('mapprep')">🗺️ Map Prep Module</button>
+                <button class="btn-outline" onclick="switchHubTab('forum')">💬 Study Group & Forum</button>
+                <button class="btn-outline" onclick="switchHubTab('certificate')">🎖️ Badge & Certificate Generator</button>
+            </div>
+
+            <!-- Subtab 1: Flashcards -->
+            <div id="hub-flashcards">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Academic Prep Deck</h3>
+                    <button class="btn-secondary" onclick="nextFlashcard()">Next Card &rarr;</button>
+                </div>
+                <div class="flashcard-container" onclick="flipFlashcard()">
+                    <div class="flashcard" id="flashcardBox">
+                        <span style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Click to reveal answer / definition</span>
+                        <h3 id="cardTitle" style="color: var(--primary-color);">What value of gravity (g) should be used in physics questions on this platform?</h3>
+                        <p id="cardAnswer" style="display: none; color: #059669; font-weight: 600; margin-top: 1rem;">Always use g = 10 m/s² for all physics problem calculations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 2: Study Notes -->
+            <div id="hub-notes" style="display: none;">
+                <h3>📚 Study Notes & Explanations Repository</h3>
+                <div style="margin-top: 1rem; text-align: left; background: #fafafa; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h4 style="color: var(--primary-color);">1. C Programming Memory & Dynamic Allocation</h4>
+                    <p style="color: #475569; font-size: 0.95rem; margin-top: 0.4rem;">Dynamic memory management uses functions like <code>malloc()</code>, <code>calloc()</code>, <code>realloc()</code>, and <code>free()</code> defined in <code>&lt;stdlib.h&gt;</code>. Pointers store memory addresses of variables.</p>
+                    
+                    <h4 style="color: var(--primary-color); margin-top: 1.2rem;">2. Projectile Motion Equations (Physics Mechanics)</h4>
+                    <p style="color: #475569; font-size: 0.95rem; margin-top: 0.4rem;">Vertical displacement is calculated as $y = v_0 t - \frac{1}{2}gt^2$ using <strong>g = 10 m/s²</strong> as the standard acceleration constant.</p>
+
+                    <h4 style="color: var(--primary-color); margin-top: 1.2rem;">3. Remainder & Binomial Expansion Theorems</h4>
+                    <p style="color: #475569; font-size: 0.95rem; margin-top: 0.4rem;">The Remainder Theorem states that evaluating $f(a)$ yields the remainder of $\frac{f(x)}{x - a}$.</p>
+                </div>
+            </div>
+
+            <!-- Subtab 3: Map Prep Module -->
+            <div id="hub-mapprep" style="display: none;">
+                <h3>🗺️ Mind Map & Map Prep Module</h3>
+                <p style="color: #64748b;">Visual learning pathways and roadmap trees for university topics.</p>
+                <div style="margin-top: 1.5rem; background: #eef2ff; padding: 2rem; border-radius: 10px; border: 2px dashed #6366f1; text-align: center;">
+                    <h4 style="color: #3730a3;">[ Topic Roadmap Visualizer ]</h4>
+                    <p style="margin-top: 0.5rem; color: #4338ca;">C Syntax Foundations ➔ Memory Management & Pointers ➔ Algorithm Efficiency (O-notation) ➔ Applied Projectiles & Dynamics</p>
+                </div>
+            </div>
+
+            <!-- Subtab 4: Forum -->
+            <div id="hub-forum" style="display: none;">
+                <h3>💬 Student Discussion Forum</h3>
+                <div style="margin-top: 1rem; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 0.8rem; margin-bottom: 0.8rem;">
+                        <strong>@Kamal_ICT:</strong> Does anyone have simplified notes for Binomial Expansion theorem?
+                        <br><span style="font-size: 0.8rem; color: #64748b;">Posted 20 mins ago in #Mathematics</span>
+                    </div>
+                    <div>
+                        <strong>@Kasun_Dev:</strong> Yes! Check the Study Notes section above under Algebra & Polynomials.
+                        <br><span style="font-size: 0.8rem; color: #64748b;">Posted 10 mins ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 5: Certificate Generator -->
+            <div id="hub-certificate" style="display: none;">
+                <h3>🎖️ Badge & Certificate Generator</h3>
+                <p style="color: #64748b;">Generate your official TriviaStorm achievement certificate upon passing quizzes.</p>
+                
+                <div class="certificate-preview">
+                    <h1 style="color: var(--primary-color); font-size: 2rem; font-family: 'Times New Roman', serif;">CERTIFICATE OF ACHIEVEMENT</h1>
+                    <p style="margin-top: 1rem; color: #64748b;">This is proudly presented to</p>
+                    <h2 style="color: var(--accent-color); margin: 0.5rem 0;" class="user-display-name">Alex</h2>
+                    <p style="color: #475569;">For successfully completing the <strong>TriviaStorm Academic & Science Challenge</strong> with distinction.</p>
+                    <div style="margin-top: 2rem; font-size: 0.85rem; color: #94a3b8;">Issued by TriviaStorm Academic Board • Department of ICT</div>
+                </div>
+                <button class="btn-primary" style="margin-top: 1.5rem;" onclick="alert('Certificate PDF download initiated!')">Download Certificate PDF 📄</button>
+            </div>
+        </section>
+
+        <!-- View 6: Auth Views -->
+        <section id="view-login" class="view-section">
+		
+		<a href="login.html" target="_blank" class="btn">Cick Here to Login</a>
+        </section>
+
+        <section id="view-signup" class="view-section">
+	    <a href="signup.html" target="_blank" class="btn">Sign Up</a>
+            
+	</section>
+
+        <!-- View 7: Contact -->
+        <section id="view-contact" class="view-section">
+            <h2>Contact TriviaStorm Academic Team</h2>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Have questions or feature requests? Send us a message.</p>
+            <form onsubmit="event.preventDefault(); alert('Message sent successfully!'); switchView('view-landing');" style="max-width: 500px; margin: 0 auto;">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Message:</label>
+                    <textarea style="width: 100%; height: 100px; padding: 0.5rem;" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Send Feedback</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="display: flex; gap: 1rem;">
+            <a href="#" onclick="switchView('view-landing')" style="color: var(--text-color); text-decoration: none;">Home</a>
+            <a href="#" onclick="switchView('view-student-hub')" style="color: var(--text-color); text-decoration: none;">Student Hub</a>
+            <a href="#" onclick="switchView('view-contact')" style="color: var(--text-color); text-decoration: none;">Contact Us</a>
+        </div>
+        <div>© 2026 Department of ICT | TriviaStorm Academic Engine</div>
+    </footer>
+
+    <!-- JavaScript Engine -->
+    <script>
+        // Updated Question Bank incorporating strict Physics (g=10) & Academic guidelines
+        const questionBank = [
+            { cat: "C Programming & Web", diff: "Easy", q: "Which HTML tag is used for the largest heading in web pages?", options: ["<h6>", "<head>", "<h1>", "<heading>"], answer: 2, note: "<h1> defines the most important top-level heading in HTML." },
+            { cat: "C Programming & Web", diff: "Medium", q: "In C language, which function in <stdlib.h> is used to allocate dynamic memory?", options: ["malloc()", "alloc()", "memget()", "new()"], answer: 0, note: "malloc() dynamically allocates a specified number of bytes in memory." },
+            { cat: "Computer Science", diff: "Hard", q: "What is the time complexity of searching an element using Binary Search?", options: ["O(n)", "O(n^2)", "O(log n)", "O(1)"], answer: 2, note: "Binary search repeatedly divides the search space in half, resulting in O(log n)." },
+            { cat: "Physics & Mechanics", diff: "Medium", q: "A ball is dropped from rest. Taking g = 10 m/s², what is its velocity after 3 seconds?", options: ["15 m/s", "20 m/s", "30 m/s", "9.8 m/s"], answer: 2, note: "v = u + gt => v = 0 + (10)(3) = 30 m/s." },
+            { cat: "Physics & Mechanics", diff: "Medium", q: "For a projectile launched at speed v, what launch angle yields the maximum horizontal range?", options: ["30°", "45°", "60°", "90°"], answer: 1, note: "sin(2θ) reaches maximum when 2θ = 90°, hence θ = 45°." },
+            { cat: "Mathematics", diff: "Medium", q: "What constant value of acceleration due to gravity (g) is strictly assumed across all physics questions here?", options: ["9.81 m/s²", "10 m/s²", "9.8 m/s²", "8.9 m/s²"], answer: 1, note: "All academic mechanics calculations on TriviaStorm strictly use g = 10 m/s²." }
+        ];
+
+        // Flashcards Pool
+        const flashcardsDeck = [
+            { q: "What gravity constant (g) should be used in physics mechanics calculations?", a: "Always use g = 10 m/s² for streamlined computation." },
+            { q: "What is the difference between let and var in JavaScript?", a: "`let` is block-scoped, while `var` is function-scoped and hoisted." },
+            { q: "What is the Remainder Theorem in Algebra?", a: "If polynomial f(x) is divided by (x - a), the remainder is f(a)." }
+        ];
+        let currentCardIndex = 0;
+
+        // Global Application State
+        let activeQuestions = [];
+        let isLoggedIn = false;
+        let currentUser = "Alex";
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerInterval = null;
+        let timeRemaining = 120;
+
+        function switchView(viewId) {
+            clearInterval(timerInterval);
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add('active');
+            updateHeaderNav();
+
+            // Re-render MathJax if entering student hub
+            if (viewId === 'view-student-hub' && window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function updateHeaderNav() {
+            const nav = document.getElementById('navLinks');
+            if (!isLoggedIn) {
+                nav.innerHTML = `
+                    <button onclick="switchView('view-landing')">Lobby</button>
+                    <button onclick="switchView('view-custom-quiz')">Dynamic Quizzes</button>
+                    <button onclick="switchView('view-live-tracking')">Live Tracking</button>
+                    <button onclick="switchView('view-student-hub')">Student Hub</button>
+                    <button class="btn-outline" onclick="switchView('view-login')">LOG IN</button>
+                    <button class="btn-primary" onclick="switchView('view-signup')">Sign Up</button>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <button onclick="switchView('view-landing')">Lobby</button>
+                    <button onclick="switchView('view-custom-quiz')">Quizzes</button>
+                    <button onclick="switchView('view-live-tracking')">Live Tracking</button>
+                    <button onclick="switchView('view-student-hub')">Student Hub</button>
+                    <span>User: <strong>${currentUser}</strong> (<a href="#" onclick="logout()" style="color:var(--timer-color);">Logout</a>)</span>
+                `;
+            }
+            document.querySelectorAll('.user-display-name').forEach(el => el.textContent = currentUser);
+        }
+
+        function handleCustomQuizStart(e) {
+            e.preventDefault();
+            const cat = document.getElementById('quizCategory').value;
+            const diff = document.getElementById('quizDifficulty').value;
+            const count = parseInt(document.getElementById('quizQuestionCount').value) || 10;
+            
+            // Filter questions by selected category
+            let pool = questionBank.filter(q => cat === "All" || q.cat === cat);
+            if (pool.length === 0) pool = [...questionBank];
+            
+            // Shuffle and limit to requested question count
+            pool.sort(() => 0.5 - Math.random());
+            activeQuestions = pool.slice(0, count);
+
+            document.getElementById('currentCatBadge').textContent = cat;
+            document.getElementById('currentDiffBadge').textContent = diff;
+
+            startQuizEngine();
+        }
+
+        function startDailyChallenge() {
+            activeQuestions = [...questionBank].sort(() => 0.5 - Math.random());
+            document.getElementById('currentCatBadge').textContent = "Daily Storm ⚡";
+            document.getElementById('currentDiffBadge').textContent = "Adaptive";
+            startQuizEngine();
+        }
+
+        function startQuizEngine() {
+            currentQuestionIndex = 0;
+            score = 0;
+            timeRemaining = 120;
+            document.getElementById('currentScore').textContent = score;
+            switchView('view-quiz');
+            loadQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const m = Math.floor(timeRemaining / 60);
+                const s = timeRemaining % 60;
+                document.getElementById('timer').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert("⏰ Time's up!");
+                    switchView('view-live-tracking');
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const q = activeQuestions[currentQuestionIndex];
+            document.getElementById('qNumTag').textContent = `Q${currentQuestionIndex + 1} of ${activeQuestions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('explanationNote').style.display = 'none';
+            document.getElementById('explanationNote').textContent = q.note || "Explanation note available.";
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            const prefixes = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, idx) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.onclick = () => selectOption(idx);
+                li.innerHTML = `
+                    <input type="radio" name="ans" id="opt${idx}" value="${idx}" style="cursor:pointer;">
+                    <label for="opt${idx}" style="cursor:pointer; width:100%;">${prefixes[idx]}. ${opt}</label>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        function selectOption(index) {
+            const items = document.querySelectorAll('.option-item');
+            items.forEach((item, idx) => {
+                if (idx === index) {
+                    item.classList.add('selected');
+                    item.querySelector('input').checked = true;
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
+        function toggleHint() {
+            const el = document.getElementById('explanationNote');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function submitAnswer() {
+            const selected = document.querySelector('input[name="ans"]:checked');
+            if (!selected) {
+                alert("Please select an answer choice before submitting!");
+                return;
+            }
+            if (parseInt(selected.value) === activeQuestions[currentQuestionIndex].answer) {
+                score += 10;
+                document.getElementById('currentScore').textContent = score;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < activeQuestions.length) {
+                loadQuestion();
+            } else {
+                clearInterval(timerInterval);
+                alert(`🎉 Quiz Finished! Final Score: ${score} / ${activeQuestions.length * 10} points.`);
+                switchView('view-live-tracking');
+            }
+        }
+
+        /* Live Tracking Subtabs */
+        function switchLiveTab(tab) {
+            document.getElementById('tab-leaderboard').style.display = tab === 'leaderboard' ? 'block' : 'none';
+            document.getElementById('tab-battle').style.display = tab === 'battle' ? 'block' : 'none';
+            document.getElementById('tab-analytics').style.display = tab === 'analytics' ? 'block' : 'none';
+        }
+
+        function simulateBattleRound() {
+            const currentP1 = parseInt(document.getElementById('p1Score').textContent);
+            const currentP2 = parseInt(document.getElementById('p2Score').textContent);
+            document.getElementById('p1Score').textContent = currentP1 + 10;
+            document.getElementById('p2Score').textContent = currentP2 + (Math.random() > 0.4 ? 10 : 0);
+        }
+
+        /* Student Hub Subtabs */
+        function switchHubTab(tab) {
+            document.getElementById('hub-flashcards').style.display = tab === 'flashcards' ? 'block' : 'none';
+            document.getElementById('hub-notes').style.display = tab === 'notes' ? 'block' : 'none';
+            document.getElementById('hub-mapprep').style.display = tab === 'mapprep' ? 'block' : 'none';
+            document.getElementById('hub-forum').style.display = tab === 'forum' ? 'block' : 'none';
+            document.getElementById('hub-certificate').style.display = tab === 'certificate' ? 'block' : 'none';
+            
+            if (tab === 'notes' && window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function flipFlashcard() {
+            const ans = document.getElementById('cardAnswer');
+            ans.style.display = ans.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function nextFlashcard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcardsDeck.length;
+            document.getElementById('cardTitle').textContent = flashcardsDeck[currentCardIndex].q;
+            document.getElementById('cardAnswer').textContent = flashcardsDeck[currentCardIndex].a;
+            document.getElementById('cardAnswer').style.display = 'none';
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            isLoggedIn = true;
+            currentUser = document.getElementById('loginEmail').value.split('@')[0] || "Alex";
+            updateHeaderNav();
+            switchView('view-landing');
+        }
+
+        function handleSignupSubmit(e) {
+            e.preventDefault();
+            isLoggedIn = true;
+            currentUser = document.getElementById('signupName').value || "Alex";
+            updateHeaderNav();
+            switchView('view-landing');
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            currentUser = "Alex";
+            updateHeaderNav();
+            switchView('view-landing');
+        }
+
+        // Initialize Application State
+        updateHeaderNav();
+    </script>
+</body>
+</html>
