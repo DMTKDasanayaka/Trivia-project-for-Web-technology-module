@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TriviaStorm</title>
+    <style>
+        :root {
+            --primary-color: #1a2b42;
+            --accent-color: #ff9900;
+            --bg-color: #E7E5DF;
+            --card-bg: #E9F1F7;
+            --border-color: #d1d9e6;
+            --text-color: #1e293b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .brand-name { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); text-decoration: none; }
+        nav a { text-decoration: none; color: var(--primary-color); font-weight: 600; padding: 0.5rem 0.8rem; }
+        main { flex: 1; max-width: 800px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 2.5rem; border: 1px solid var(--border-color); }
+        h1 { color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; }
+        .contact-info { margin-bottom: 2rem; line-height: 1.8; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color); }
+        .btn-submit { background-color: var(--accent-color); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .btn-submit:hover { background-color: #e08800; }
+
+        /* --- Popup Modal Styles (මෙන්න මේ කොටස එකතු කළා) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+            text-align: left;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-btn:hover {
+            color: var(--accent-color);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="brand-name">⚡ TriviaStorm</a>
+        <nav>
+            <a href="index.html">Back to Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <h1>Contact Us</h1>
+            <div class="contact-info">
+                <p><strong>Email:</strong> ITT2024026@tec.rjt.ac.lk / ITT2024045@tec.rjt.ac.lk</p>
+                <p><strong>Phone:</strong> +94 741258667</p>
+                <p><strong>Location:</strong> Department of ICT, Rajarata University of Sri Lanka, Mihinthale 50300, Sri Lanka</p>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="5" placeholder="Write your message here..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <link rel="stylesheet" href="footer.css">
+        <div class="footer-container">
+          
+          <!-- Company / Brand Info -->
+          <div class="footer-section about">
+            <h3>We are</h3>
+            <p>Department of ICT RUSL.</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-section links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="#" onclick="openModal('aboutModal')">About Us</a></li>
+              <li><a href="#" onclick="openModal('servicesModal')">Services</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact Us Section -->
+          <div class="footer-section contact">
+            <h3>Contact Us</h3>
+            <p><strong>Email:</strong>----ITT2024026@tec.rjt.ac.lk----ITT2024045@tec.rjt.ac.lk---- </p>
+            <p><strong>Phone:</strong> +94 741258667</p>
+            <p><strong>Location:</strong>Rajarata University of Sri Lanka,Mihinthale 50300,Sri Lanka</p>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- About Us Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('aboutModal')">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">⚡ About Us</h2>
+            <p style="line-height: 1.6; color: #475569;">
+                Welcome to TriviaStorm Main Portal! Developed by the Department of ICT at Rajarata University of Sri Lanka (RUSL). 
+                Our platform provides dynamic quizzes, live arenas, adaptive learning modules, and specialized student study tools for academic excellence.
+            </p>
+        </div>
+    </div>
+
+    <!-- Services Modal -->
+    <div id="servicesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('servicesModal')">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🛠️ Our Services</h2>
+            <ul style="padding-left: 1.2rem; line-height: 1.8; color: #475569;">
+                <li><strong>Dynamic Quiz Engine:</strong> Adaptive difficulty and dynamic question selection.</li>
+                <li><strong>Live Battle Arena:</strong> Real-time 1v1 quiz battles and leaderboards.</li>
+                <li><strong>Student Hub:</strong> Interactive flashcards, physics study notes, and certificate generation.</li>
+            </ul>
+        </div>
+    </div>
+  
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
