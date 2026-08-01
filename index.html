@@ -36,6 +36,48 @@
         .hub-card li { padding: 0.3rem 0; color: #475569; }
         .btn-card { display: block; text-align: center; background: var(--primary-color); color: white !important; text-decoration: none; padding: 0.6rem; border-radius: 6px; font-weight: bold; }
         footer { background-color: var(--footer-bg); padding: 1.5rem; text-align: center; margin-top: auto; }
+
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+            text-align: left;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-btn:hover {
+            color: var(--accent-color);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -94,40 +136,80 @@
             </div>
         </div>
     </main>
+
     <footer class="site-footer">
         <link rel="stylesheet" href="footer.css">
-    <div class="footer-container">
-      
-      <!-- Company / Brand Info -->
-      <div class="footer-section about">
-        <h3>Your Brand Name</h3>
-        <p>Department of ICT RUSL.</p>
-      </div>
+        <div class="footer-container">
+          
+          <!-- Company / Brand Info -->
+          <div class="footer-section about">
+            <h3>We are</h3>
+            <p>Department of ICT RUSL.</p>
+          </div>
 
-      <!-- Quick Links -->
-      <div class="footer-section links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
+          <!-- Quick Links -->
+          <div class="footer-section links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#" onclick="openModal('aboutModal')">About Us</a></li>
+              <li><a href="#" onclick="openModal('servicesModal')">Services</a></li>
+              <li><a href=contact.html>Contact Us</a></li>
+            </ul>
+          </div>
 
-      <!-- Contact Us Section -->
-      <div class="footer-section contact">
-        <h3>Contact Us</h3>
-        <p><strong>Email:</strong>----ITT2024026@tec.rjt.ac.lk----ITT2024045@tec.rjt.ac.lk---- </p>
-        <p><strong>Phone:</strong> +94 741258667</p>
-        <p><strong>Location:</strong>Rajarata University of Sri Lanka,Mihinthale 50300,Sri Lanka</p>
-      </div>
+          <!-- Contact Us Section -->
+          <div class="footer-section contact">
+            <h3>Contact Us</h3>
+            <p><strong>Email:</strong>----ITT2024026@tec.rjt.ac.lk----ITT2024045@tec.rjt.ac.lk---- </p>
+            <p><strong>Phone:</strong> +94 741258667</p>
+            <p><strong>Location:</strong>Rajarata University of Sri Lanka,Mihinthale 50300,Sri Lanka</p>
+          </div>
 
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- About Us Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('aboutModal')">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">⚡ About Us</h2>
+            <p style="line-height: 1.6; color: #475569;">
+                Welcome to TriviaStorm Main Portal! Developed by the Department of ICT at Rajarata University of Sri Lanka (RUSL). 
+                Our platform provides dynamic quizzes, live arenas, adaptive learning modules, and specialized student study tools for academic excellence.
+            </p>
+        </div>
     </div>
 
-    <div class="footer-bottom">
-      <p>&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
+    <!-- Services Modal -->
+    <div id="servicesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('servicesModal')">&times;</span>
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🛠️ Our Services</h2>
+            <ul style="padding-left: 1.2rem; line-height: 1.8; color: #475569;">
+                <li><strong>Dynamic Quiz Engine:</strong> Adaptive difficulty and dynamic question selection.</li>
+                <li><strong>Live Battle Arena:</strong> Real-time 1v1 quiz battles and leaderboards.</li>
+                <li><strong>Student Hub:</strong> Interactive flashcards, physics study notes, and certificate generation.</li>
+            </ul>
+        </div>
     </div>
-  </footer>
+  
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
