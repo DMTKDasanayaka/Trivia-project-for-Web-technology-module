@@ -4,212 +4,346 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TriviaStorm - Main Portal</title>
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
         :root {
-            --primary-color: #1a2b42;
-            --accent-color: #ff9900;
-            --accent-hover: #e08800;
-            --bg-color: #E7E5DF;
-            --card-bg: #E9F1F7;
-            --border-color: #d1d9e6;
-            --text-color: #1e293b;
-            --footer-bg: #e2e8f0;
-            --info-color: #3b82f6;
+            --primary-color: #0f172a;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
-        header { background-color: var(--card-bg); border-bottom: 2px solid var(--border-color); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .brand-name { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); text-decoration: none; }
-        nav { display: flex; gap: 1rem; align-items: center; }
-        nav a { text-decoration: none; color: var(--primary-color); font-weight: 600; padding: 0.5rem 0.8rem; border-radius: 6px; transition: 0.2s; }
-        nav a:hover, nav a.active { background-color: rgba(255,255,255,0.4); }
-        .btn-outline { border: 2px solid var(--primary-color); }
-        .btn-primary { background-color: var(--accent-color); color: #fff !important; }
-        main { flex: 1; max-width: 1100px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 2.5rem; border: 1px solid var(--border-color); text-align: center; }
-        .landing-title { font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 0.5rem; }
-        .subtitle { color: #334155; margin-bottom: 2rem; font-size: 1.1rem; }
-        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; text-align: left; }
-        .hub-card { background: #fafafa; border-radius: 10px; padding: 1.5rem; border: 1px solid var(--border-color); }
-        .hub-card h3 { color: var(--primary-color); margin-bottom: 0.8rem; }
-        .hub-card ul { list-style: none; margin-bottom: 1.2rem; }
-        .hub-card li { padding: 0.3rem 0; color: #475569; }
-        .btn-card { display: block; text-align: center; background: var(--primary-color); color: white !important; text-decoration: none; padding: 0.6rem; border-radius: 6px; font-weight: bold; }
-        footer { background-color: var(--footer-bg); padding: 1.5rem; text-align: center; margin-top: auto; }
 
-        /* Popup Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .modal-content {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+        /* Modern Glass/Clean Navbar Style */
+        .navbar-custom {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .brand-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        /* Hero Banner Styling */
+        .hero-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 24px;
+            color: #ffffff;
             position: relative;
-            animation: fadeIn 0.3s ease-in-out;
-            text-align: left;
+            overflow: hidden;
         }
-        .close-btn {
+
+        .hero-banner::before {
+            content: '';
             position: absolute;
-            top: 12px;
-            right: 20px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #64748b;
-            cursor: pointer;
-            transition: 0.2s;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(245, 158, 11, 0.15);
+            filter: blur(80px);
+            border-radius: 50%;
         }
-        .close-btn:hover {
+
+        /* Card Overrides & Animations */
+        .hub-card {
+            background-color: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hub-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+            border-color: #cbd5e1;
+        }
+
+        /* Buttons Styling */
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: #ffffff !important;
+            font-weight: 600;
+            border: none;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-navy {
+            background-color: var(--primary-color);
+            color: #ffffff !important;
+            font-weight: 600;
+            border: none;
+        }
+
+        .btn-navy:hover {
+            background-color: #1e293b;
+        }
+
+        .btn-custom-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .btn-custom-outline:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        /* Modern Footer Styling */
+        .site-footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+        }
+
+        .site-footer h5 {
+            color: #f8fafc;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .site-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .site-footer a:hover {
             color: var(--accent-color);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <header>
-        <a href="index.html" class="brand-name">⚡ TriviaStorm</a>
-        <nav>
-            <a href="index.html" class="active">Lobby</a>
-            <a href="quiz.html">Quizzes</a>
-            <a href="live.html">Live Arena</a>
-            <a href="student_hub.html">Student Hub</a>
-            <a href="login.html" class="btn-outline">Log In</a>
-            <a href="signup.html" class="btn-primary">Sign Up</a>
+
+    <!-- Header / Navbar -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-custom px-3 px-lg-5 py-3">
+            <div class="container-fluid">
+                <a class="navbar-brand brand-name d-flex align-items-center gap-2" href="index.html">
+                    <span class="text-warning fs-3"><i class="bi bi-lightning-charge-fill"></i></span> TriviaStorm
+                </a>
+                
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3 gap-2 mt-3 mt-lg-0">
+                        <li class="nav-item"><a class="nav-link fw-bold active text-primary" href="index.html">Lobby</a></li>
+                        <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="quiz.html">Quizzes</a></li>
+                        <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="live.html">Live Arena</a></li>
+                        <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="student_hub.html">Student Hub</a></li>
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-custom-outline px-4 rounded-pill w-100" href="login.html">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-accent px-4 rounded-pill w-100 shadow-sm" href="signup.html">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    
 
-    <main>
-        <div class="card">
-            <h1 class="landing-title">TRIVIA STORM MAIN LOBBY</h1>
-            <p class="subtitle">Dynamic Quizzes • Live Tracking & Battles • Student Hub & Academic Prep</p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="quiz.html" class="btn-card" style="background: var(--accent-color); padding: 0.8rem 1.5rem;">⚡ Launch Quiz Engine</a>
-                <a href="live.html" class="btn-card" style="background: var(--info-color); padding: 0.8rem 1.5rem;">📡 Go to Live Arena</a>
-            </div>
-
-            <div class="hub-grid">
-                <div class="hub-card">
-                    <h3>🎯 Dynamic Quizzes</h3>
-                    <ul>
-                        <li>✨ Adaptive Difficulty Logic</li>
-                        <li>🔀 Dynamic Question Bank</li>
-                        <li>🏷️ Category Selection</li>
-                    </ul>
-                    <a href="quiz.html" class="btn-card">Open Quizzes</a>
-                </div>
-
-                <div class="hub-card">
-                    <h3>📡 Live Tracking</h3>
-                    <ul>
-                        <li>🏆 Real-Time Leaderboard</li>
-                        <li>⚔️ Live 1v1 Battle Arena</li>
-                        <li>📊 Analytics & Speed Stats</li>
-                    </ul>
-                    <a href="live.html" class="btn-card">Open Live Arena</a>
-                </div>
-
-                <div class="hub-card">
-                    <h3>🎓 Student Hub</h3>
-                    <ul>
-                        <li>🎴 Flashcard Study Deck</li>
-                        <li>📚 Notes (Physics g=10 m/s²)</li>
-                        <li>🎖️ Certificate Generator</li>
-                    </ul>
-                    <a href="student_hub.html" class="btn-card">Open Student Hub</a>
+    <!-- Main Content Area -->
+    <main class="container my-4 my-lg-5">
+        
+        <!-- Hero Section -->
+        <div class="hero-banner p-4 p-md-5 mb-5 shadow-lg">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-lg-10">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">Welcome to Main Lobby</span>
+                    <h1 class="display-4 fw-black text-white mb-3 tracking-tight">TRIVIA STORM PORTAL</h1>
+                    <p class="lead text-slate-300 mb-4 opacity-75">Dynamic Quizzes • Live Tracking & Battles • Student Hub & Academic Prep</p>
+                    
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="quiz.html" class="btn btn-accent btn-lg px-4 py-3 rounded-pill fs-6 shadow">
+                            <i class="bi bi-rocket-takeoff-fill me-2"></i>Launch Quiz Engine
+                        </a>
+                        <a href="live.html" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fs-6 shadow">
+                            <i class="bi bi-broadcast me-2"></i>Go to Live Arena
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Hub Cards Grid -->
+        <div class="row g-4 text-start">
+            
+            <!-- Card 1: Dynamic Quizzes -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card hub-card h-100 p-4 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-3 bg-warning-subtle text-warning rounded-4 fs-4">
+                                <i class="bi bi-controller"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-0">Dynamic Quizzes</h3>
+                        </div>
+                        
+                        <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Adaptive Difficulty Logic</li>
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Dynamic Question Bank</li>
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Category Selection</li>
+                        </ul>
+                        
+                        <a href="quiz.html" class="btn btn-navy py-2.5 rounded-3 w-100">
+                            Open Quizzes <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Live Tracking -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card hub-card h-100 p-4 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-3 bg-primary-subtle text-primary rounded-4 fs-4">
+                                <i class="bi bi-trophy-fill"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-0">Live Tracking</h3>
+                        </div>
+                        
+                        <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Real-Time Leaderboard</li>
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Live 1v1 Battle Arena</li>
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Analytics & Speed Stats</li>
+                        </ul>
+                        
+                        <a href="live.html" class="btn btn-navy py-2.5 rounded-3 w-100">
+                            Open Live Arena <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Student Hub -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card hub-card h-100 p-4 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-3 bg-success-subtle text-success rounded-4 fs-4">
+                                <i class="bi bi-mortarboard-fill"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-0">Student Hub</h3>
+                        </div>
+                        
+                        <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>Flashcard Study Deck</li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>Notes (Physics $g=10\text{ m/s}^2$)</li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>Certificate Generator</li>
+                        </ul>
+                        
+                        <a href="student_hub.html" class="btn btn-navy py-2.5 rounded-3 w-100">
+                            Open Student Hub <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
-    <footer class="site-footer">
-        <link rel="stylesheet" href="footer.css">
-        <div class="footer-container">
-          
-          <!-- Company / Brand Info -->
-          <div class="footer-section about">
-            <h3>We are</h3>
-            <p>Department of ICT RUSL.</p>
-          </div>
+    <!-- Site Footer -->
+    <footer class="site-footer py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Section 1 -->
+                <div class="col-12 col-md-4">
+                    <h5><i class="bi bi-building me-2 text-warning"></i>We Are</h5>
+                    <p class="small text-slate-400">Department of ICT, Rajarata University of Sri Lanka (RUSL).</p>
+                </div>
 
-          <!-- Quick Links -->
-          <div class="footer-section links">
-            <h3>Quick Links</h3>
-            <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#" onclick="openModal('aboutModal')">About Us</a></li>
-              <li><a href="#" onclick="openModal('servicesModal')">Services</a></li>
-              <li><a href=contact.html>Contact Us</a></li>
-            </ul>
-          </div>
+                <!-- Section 2 -->
+                <div class="col-12 col-md-4">
+                    <h5><i class="bi bi-link-45deg me-2 text-warning"></i>Quick Links</h5>
+                    <ul class="list-unstyled small lh-lg">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About Us</a></li>
+                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">Services</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
 
-          <!-- Contact Us Section -->
-          <div class="footer-section contact">
-            <h3>Contact Us</h3>
-            <p><strong>Email:</strong>----ITT2024026@tec.rjt.ac.lk----ITT2024045@tec.rjt.ac.lk---- </p>
-            <p><strong>Phone:</strong> +94 741258667</p>
-            <p><strong>Location:</strong>Rajarata University of Sri Lanka,Mihinthale 50300,Sri Lanka</p>
-          </div>
+                <!-- Section 3 -->
+                <div class="col-12 col-md-4">
+                    <h5><i class="bi bi-envelope me-2 text-warning"></i>Contact Us</h5>
+                    <p class="small mb-1"><i class="bi bi-envelope-at me-2"></i>ITT2024026@tec.rjt.ac.lk</p>
+                    <p class="small mb-1"><i class="bi bi-envelope-at me-2"></i>ITT2024045@tec.rjt.ac.lk</p>
+                    <p class="small mb-1"><i class="bi bi-telephone me-2"></i>+94 741258667</p>
+                    <p class="small"><i class="bi bi-geo-alt me-2"></i>Mihintale 50300, Sri Lanka</p>
+                </div>
+            </div>
 
-        </div>
+            <hr class="border-secondary my-4">
 
-        <div class="footer-bottom">
-          <p>&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
+            <div class="text-center small">
+                <p class="mb-0">&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- About Us Modal -->
-    <div id="aboutModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('aboutModal')">&times;</span>
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">⚡ About Us</h2>
-            <p style="line-height: 1.6; color: #475569;">
-                Welcome to TriviaStorm Main Portal! Developed by the Department of ICT at Rajarata University of Sri Lanka (RUSL). 
-                Our platform provides dynamic quizzes, live arenas, adaptive learning modules, and specialized student study tools for academic excellence.
-            </p>
+    <!-- Bootstrap Modals -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-info-circle text-warning me-2"></i>About Us</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-secondary lh-lg">
+                    Welcome to TriviaStorm Main Portal! Developed by the Department of ICT at Rajarata University of Sri Lanka (RUSL). Our platform provides dynamic quizzes, live arenas, adaptive learning modules, and specialized student study tools for academic excellence.
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Services Modal -->
-    <div id="servicesModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('servicesModal')">&times;</span>
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🛠️ Our Services</h2>
-            <ul style="padding-left: 1.2rem; line-height: 1.8; color: #475569;">
-                <li><strong>Dynamic Quiz Engine:</strong> Adaptive difficulty and dynamic question selection.</li>
-                <li><strong>Live Battle Arena:</strong> Real-time 1v1 quiz battles and leaderboards.</li>
-                <li><strong>Student Hub:</strong> Interactive flashcards, physics study notes, and certificate generation.</li>
-            </ul>
+    <div class="modal fade" id="servicesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-gear-wide-connected text-warning me-2"></i>Our Services</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-secondary">
+                    <ul class="ps-3 lh-lg mb-0">
+                        <li><strong>Dynamic Quiz Engine:</strong> Adaptive difficulty and dynamic question selection.</li>
+                        <li><strong>Live Battle Arena:</strong> Real-time 1v1 quiz battles and leaderboards.</li>
+                        <li><strong>Student Hub:</strong> Interactive flashcards, physics study notes, and certificate generation.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-  
-    <script>
-        function openModal(id) {
-            document.getElementById(id).style.display = "flex";
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = "none";
-            }
-        }
-    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
