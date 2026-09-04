@@ -1,1 +1,0 @@
-# Trivia-project-for-Web-technology-module

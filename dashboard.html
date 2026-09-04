@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TriviaStorm - Main Portal</title>
+    <title>TriviaStorm - Dashboard</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -96,17 +96,6 @@
             background-color: #1e293b;
         }
 
-        .btn-custom-outline {
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .btn-custom-outline:hover {
-            background-color: var(--primary-color);
-            color: #ffffff;
-        }
-
         .btn-danger-custom {
             background-color: #dc2626;
             color: #ffffff !important;
@@ -157,17 +146,15 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3 gap-2 mt-3 mt-lg-0">
-                        <li class="nav-item"><a class="nav-link fw-bold active text-primary" href="index.html">Lobby</a></li>
+                        <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="index.html">Lobby</a></li>
                         <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="quiz.html">Quizzes</a></li>
                         <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="live.html">Live Arena</a></li>
                         <li class="nav-item"><a class="nav-link fw-semibold text-secondary" href="student_hub.html">Student Hub</a></li>
-                        
-                        <!-- Dynamic Login/Signup/Dashboard Buttons Section -->
-                        <li class="nav-item ms-lg-2 w-100 w-lg-auto" id="auth-buttons">
-                            <div class="d-flex flex-column flex-lg-row gap-2">
-                                <a class="btn btn-custom-outline px-4 rounded-pill w-100" href="login.html">Log In</a>
-                                <a class="btn btn-accent px-4 rounded-pill w-100 shadow-sm" href="signup.html">Sign Up</a>
-                            </div>
+                        <li class="nav-item"><a class="nav-link fw-bold active text-primary" href="dashboard.html">Dashboard</a></li>
+                        <li class="nav-item ms-lg-2">
+                            <button onclick="logout()" class="btn btn-danger-custom px-4 rounded-pill w-100">
+                                <i class="bi bi-box-arrow-right me-1"></i> Log Out
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -176,20 +163,19 @@
     </header>
 
     <main class="container my-4 my-lg-5">
-        
         <div class="hero-banner p-4 p-md-5 mb-5 shadow-lg">
             <div class="row align-items-center justify-content-center text-center">
                 <div class="col-lg-10">
-                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">Welcome to Main Lobby</span>
-                    <h1 class="display-4 fw-black text-white mb-3 tracking-tight">TRIVIA STORM PORTAL</h1>
-                    <p class="lead text-slate-300 mb-4 opacity-75">Dynamic Quizzes • Live Tracking & Battles • Student Hub & Academic Prep</p>
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">User Dashboard</span>
+                    <h1 class="display-4 fw-black text-white mb-3 tracking-tight" id="welcomeUser">WELCOME BACK!</h1>
+                    <p class="lead text-slate-300 mb-4 opacity-75" id="userEmail">Track your performance, attempt live quizzes, and excel in your learning journey.</p>
                     
                     <div class="d-flex justify-content-center gap-3 flex-wrap">
                         <a href="quiz.html" class="btn btn-accent btn-lg px-4 py-3 rounded-pill fs-6 shadow">
-                            <i class="bi bi-rocket-takeoff-fill me-2"></i>Launch Quiz Engine
+                            <i class="bi bi-play-circle-fill me-2"></i>Start New Quiz
                         </a>
                         <a href="live.html" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fs-6 shadow">
-                            <i class="bi bi-broadcast me-2"></i>Go to Live Arena
+                            <i class="bi bi-trophy-fill me-2"></i>View Leaderboard
                         </a>
                     </div>
                 </div>
@@ -197,7 +183,6 @@
         </div>
 
         <div class="row g-4 text-start">
-            
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card hub-card h-100 p-4 shadow-sm">
                     <div class="card-body d-flex flex-column">
@@ -205,17 +190,15 @@
                             <div class="p-3 bg-warning-subtle text-warning rounded-4 fs-4">
                                 <i class="bi bi-controller"></i>
                             </div>
-                            <h3 class="h5 fw-bold mb-0">Dynamic Quizzes</h3>
+                            <h3 class="h5 fw-bold mb-0">Quiz Arena</h3>
                         </div>
-                        
                         <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
-                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Adaptive Difficulty Logic</li>
-                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Dynamic Question Bank</li>
-                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Category Selection</li>
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Attempt Dynamic Quizzes</li>
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Category-wise Practice</li>
+                            <li><i class="bi bi-check2-circle text-warning me-2"></i>Instant Score & Feedback</li>
                         </ul>
-                        
                         <a href="quiz.html" class="btn btn-navy py-2.5 rounded-3 w-100">
-                            Open Quizzes <i class="bi bi-arrow-right ms-1"></i>
+                            Go to Quizzes <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -226,19 +209,17 @@
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="p-3 bg-primary-subtle text-primary rounded-4 fs-4">
-                                <i class="bi bi-trophy-fill"></i>
+                                <i class="bi bi-broadcast"></i>
                             </div>
-                            <h3 class="h5 fw-bold mb-0">Live Tracking</h3>
+                            <h3 class="h5 fw-bold mb-0">Live Battles</h3>
                         </div>
-                        
                         <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
-                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Real-Time Leaderboard</li>
-                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Live 1v1 Battle Arena</li>
-                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Analytics & Speed Stats</li>
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Real-time Competition</li>
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Global Ranking Track</li>
+                            <li><i class="bi bi-check2-circle text-primary me-2"></i>Live Analytics</li>
                         </ul>
-                        
                         <a href="live.html" class="btn btn-navy py-2.5 rounded-3 w-100">
-                            Open Live Arena <i class="bi bi-arrow-right ms-1"></i>
+                            Enter Live Arena <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -251,116 +232,47 @@
                             <div class="p-3 bg-success-subtle text-success rounded-4 fs-4">
                                 <i class="bi bi-mortarboard-fill"></i>
                             </div>
-                            <h3 class="h5 fw-bold mb-0">Student Hub</h3>
+                            <h3 class="h5 fw-bold mb-0">Academic Hub</h3>
                         </div>
-                        
                         <ul class="list-unstyled text-secondary flex-grow-1 mb-4 lh-lg">
-                            <li><i class="bi bi-check2-circle text-success me-2"></i>Flashcard Study Deck</li>
-                            <li><i class="bi bi-check2-circle text-success me-2"></i>Notes (Physics $g=10\text{ m/s}^2$)</li>
-                            <li><i class="bi bi-check2-circle text-success me-2"></i>Certificate Generator</li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>Study Flashcards</li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>Physics & ICT Notes</li>
+                            <li><i class="bi bi-check2-circle text-success me-2"></i>View Achievements</li>
                         </ul>
-                        
                         <a href="student_hub.html" class="btn btn-navy py-2.5 rounded-3 w-100">
                             Open Student Hub <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
     <footer class="site-footer py-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-12 col-md-4">
-                    <h5><i class="bi bi-building me-2 text-warning"></i>We Are</h5>
-                    <p class="small text-slate-400">Department of ICT, Rajarata University of Sri Lanka (RUSL).</p>
-                </div>
-
-                <div class="col-12 col-md-4">
-                    <h5><i class="bi bi-link-45deg me-2 text-warning"></i>Quick Links</h5>
-                    <ul class="list-unstyled small lh-lg">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About Us</a></li>
-                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">Services</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-12 col-md-4">
-                    <h5><i class="bi bi-envelope me-2 text-warning"></i>Contact Us</h5>
-                    <p class="small mb-1"><i class="bi bi-envelope-at me-2"></i>ITT2024026@tec.rjt.ac.lk</p>
-                    <p class="small mb-1"><i class="bi bi-envelope-at me-2"></i>ITT2024045@tec.rjt.ac.lk</p>
-                    <p class="small mb-1"><i class="bi bi-telephone me-2"></i>+94 741258667</p>
-                    <p class="small"><i class="bi bi-geo-alt me-2"></i>Mihintale 50300, Sri Lanka</p>
-                </div>
-            </div>
-
-            <hr class="border-secondary my-4">
-
             <div class="text-center small">
                 <p class="mb-0">&copy; 2026 TriviaStorm Hub. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Modals -->
-    <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-info-circle text-warning me-2"></i>About Us</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-secondary lh-lg">
-                    Welcome to TriviaStorm Main Portal! Developed by the Department of ICT at Rajarata University of Sri Lanka (RUSL). Our platform provides dynamic quizzes, live arenas, adaptive learning modules, and specialized student study tools for academic excellence.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="servicesModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-gear-wide-connected text-warning me-2"></i>Our Services</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-secondary">
-                    <ul class="ps-3 lh-lg mb-0">
-                        <li><strong>Dynamic Quiz Engine:</strong> Adaptive difficulty and dynamic question selection.</li>
-                        <li><strong>Live Battle Arena:</strong> Real-time 1v1 quiz battles and leaderboards.</li>
-                        <li><strong>Student Hub:</strong> Interactive flashcards, physics study notes, and certificate generation.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Session Management Script -->
     <script>
         const user = JSON.parse(localStorage.getItem('user'));
-        const authButtons = document.getElementById('auth-buttons');
-
-        if (user && authButtons) {
-            authButtons.innerHTML = `
-                <div class="d-flex align-items-center gap-2">
-                    <a href="dashboard.html" class="btn btn-navy px-3 rounded-pill shadow-sm">
-                        <i class="bi bi-person-circle me-1 text-warning"></i> ${user.fullname ? user.fullname.split(' ')[0] : 'Dashboard'}
-                    </a>
-                    <button onclick="logout()" class="btn btn-danger-custom px-3 rounded-pill">
-                        Log Out
-                    </button>
-                </div>
-            `;
+        
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('welcomeUser').textContent = "WELCOME, " + (user.fullname ? user.fullname.toUpperCase() : 'USER') + "!";
+            if (user.email) {
+                document.getElementById('userEmail').textContent = "Logged in as: " + user.email;
+            }
         }
 
         function logout() {
             localStorage.removeItem('user');
-            window.location.reload();
+            window.location.href = 'login.html';
         }
     </script>
 </body>
