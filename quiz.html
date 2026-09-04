@@ -9,7 +9,7 @@
         :root {
             --primary-color: #1a2b42;
             --accent-color: #ff9900;
-            --bg-color: ##E7E5DF;
+            --bg-color: #E7E5DF;
             --card-bg: #E9F1F7;
             --border-color: #d1d9e6;
             --text-color: #1e293b;
@@ -34,7 +34,6 @@
         .option-item { padding: 0.8rem; border: 1px solid #cbd5e1; margin-bottom: 0.5rem; border-radius: 6px; cursor: pointer; }
         .option-item:hover { background: #f1f5f9; }
         .option-item.selected { background: #e0f2fe; border-color: #0284c7; }
-        footer { background-color: var(--footer-bg); padding: 1.5rem; text-align: center; margin-top: auto; }
     </style>
 </head>
 <body>
@@ -63,7 +62,7 @@
                 </div>
                 <div class="form-group">
                     <label>Difficulty:</label>
-                    <select>
+                    <select id="quizDifficulty">
                         <option>Adaptive Dynamic</option>
                         <option>Easy</option>
                         <option>Medium</option>
@@ -75,8 +74,8 @@
 
             <div id="quiz-section" class="quiz-box">
                 <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:1rem;">
-                    <span>Score: <span id="scoreDisplay">0</span></span>
-                    <span style="color:var(--timer-color);">⏱️ 02:00</span>
+                    <span>Score: <span id="scoreDisplay">0</span> | Q: <span id="questionCount">1/15</span></span>
+                    <span style="color:var(--timer-color);">⏱️ <span id="timerDisplay">02:00</span></span>
                 </div>
                 <h3 id="qTitle">Question text goes here...</h3>
                 <div class="options-list" id="optsList"></div>
@@ -85,31 +84,124 @@
         </div>
     </main>
 
+    <footer style="background-color: #0b132b; color: #ffffff; padding: 40px 20px; font-family: sans-serif; margin-top: auto;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #ffffff; margin-bottom: 15px;">🏢 We Are</h3>
+                <p style="color: #a0aec0; line-height: 1.6;">
+                    Department of ICT, Rajarata University of Sri Lanka (RUSL).
+                </p>
+            </div>
+
+            <div style="flex: 1; min-width: 200px;">
+                <h3 style="color: #ffffff; margin-bottom: 15px;">🔗 Quick Links</h3>
+                <ul style="list-style: none; padding: 0; line-height: 2;">
+                    <li><a href="index.html" style="color: #a0aec0; text-decoration: none;">Home</a></li>
+                    <li><a href="#" style="color: #a0aec0; text-decoration: none;">About Us</a></li>
+                    <li><a href="#" style="color: #a0aec0; text-decoration: none;">Services</a></li>
+                    <li><a href="#" style="color: #a0aec0; text-decoration: none;">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div style="flex: 1; min-width: 280px;">
+                <h3 style="color: #ffffff; margin-bottom: 15px;">✉️ Contact Us</h3>
+                <p style="color: #a0aec0; margin: 5px 0;">📧 ITT2024026@tec.rjt.ac.lk</p>
+                <p style="color: #a0aec0; margin: 5px 0;">📧 ITT2024045@tec.rjt.ac.lk</p>
+                <p style="color: #a0aec0; margin: 5px 0;">📞 +94 741258667</p>
+                <p style="color: #a0aec0; margin: 5px 0;">📍 Mihintale 50300, Sri Lanka</p>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; border-top: 1px solid #1c2541; padding-top: 20px; color: #a0aec0; font-size: 14px;">
+            © 2026 TriviaStorm Hub. All rights reserved.
+        </div>
+    </footer>
+
     <script>
-        const questions = [
+        // Question Pool
+        const allQuestions = [
             { q: "In C programming, which library function allocates dynamic memory?", opts: ["malloc()", "alloc()", "memget()"], ans: 0 },
             { q: "A ball is dropped from rest. With g = 10 m/s², what is its speed after 3s?", opts: ["15 m/s", "30 m/s", "20 m/s"], ans: 1 },
-            { q: "What is the result of evaluating f(a) according to the Remainder Theorem?", opts: ["Derivative", "Remainder of f(x)/(x-a)", "Integral"], ans: 1 }
+            { q: "What is the result of evaluating f(a) according to the Remainder Theorem?", opts: ["Derivative", "Remainder of f(x)/(x-a)", "Integral"], ans: 1 },
+            { q: "Which operator is used to access the value at an address stored in a C pointer?", opts: ["&", "*", "->"], ans: 1 },
+            { q: "What is the centripetal acceleration formula for uniform circular motion?", opts: ["v² / r", "v * r", "v / r²"], ans: 0 },
+            { q: "In C, what is the output format specifier for a float value?", opts: ["%d", "%c", "%f"], ans: 2 },
+            { q: "What is the degree of a quadratic equation?", opts: ["1", "2", "3"], ans: 1 },
+            { q: "If dynamic memory allocated using malloc() is not freed, what occurs?", opts: ["Stack overflow", "Memory leak", "Syntax error"], ans: 1 },
+            { q: "According to the Law of Conservation of Energy, energy can be:", opts: ["Created only", "Transformed from one form to another", "Destroyed completely"], ans: 1 },
+            { q: "Which C keyword is used to declare a variable whose value cannot be changed?", opts: ["static", "const", "volatile"], ans: 1 },
+            { q: "What is the derivative of x² with respect to x?", opts: ["x", "2x", "x²"], ans: 1 },
+            { q: "What does the SQL command TRUNCATE do to a table?", opts: ["Removes structure", "Removes all rows quickly", "Deletes database"], ans: 1 },
+            { q: "Which protocol is primarily used for secure web communication?", opts: ["HTTP", "FTP", "HTTPS"], ans: 2 },
+            { q: "In C, what index does an array start with?", opts: ["0", "1", "-1"], ans: 0 },
+            { q: "What is the value of 5! (5 factorial)?", opts: ["60", "120", "100"], ans: 1 },
+            { q: "Which law states that every action has an equal and opposite reaction?", opts: ["Newton's 1st Law", "Newton's 2nd Law", "Newton's 3rd Law"], ans: 2 },
+            { q: "What is the result of 2^4?", opts: ["8", "16", "32"], ans: 1 },
+            { q: "Which symbol is used for comments in C (single line)?", opts: ["//", "/*", "#"], ans: 0 }
         ];
+
+        let selectedQuestions = [];
         let qIdx = 0, score = 0, selectedOpt = null;
+        let timeLeft = 120; // 2 minutes (120 seconds)
+        let timerInterval = null;
+
+        // Fisher-Yates Shuffle Function
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
 
         function startQuiz() {
             document.getElementById('setup-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
+            
+            // Randomly shuffle all questions and pick 15
+            selectedQuestions = shuffle([...allQuestions]).slice(0, 15);
+            
+            qIdx = 0;
+            score = 0;
+            timeLeft = 120;
+            document.getElementById('scoreDisplay').textContent = score;
+            
+            startTimer();
             loadQ();
         }
 
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timerDisplay').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz("⏰ Time is up!");
+                }
+            }, 1000);
+        }
+
         function loadQ() {
-            if(qIdx >= questions.length) {
-                alert("Quiz finished! Final Score: " + score);
-                window.location.href = "live.html";
+            if(qIdx >= selectedQuestions.length) {
+                finishQuiz("🎉 Quiz finished!");
                 return;
             }
-            const current = questions[qIdx];
-            document.getElementById('qTitle').textContent = `Q${qIdx+1}: ${current.q}`;
+            const current = selectedQuestions[qIdx];
+            document.getElementById('questionCount').textContent = `${qIdx + 1}/${selectedQuestions.length}`;
+            document.getElementById('qTitle').textContent = `Q${qIdx + 1}: ${current.q}`;
             const container = document.getElementById('optsList');
             container.innerHTML = '';
             selectedOpt = null;
+            
             current.opts.forEach((opt, idx) => {
                 const div = document.createElement('div');
                 div.className = 'option-item';
@@ -124,50 +216,23 @@
         }
 
         function submitAnswer() {
-            if(selectedOpt === null) { alert("Select an option!"); return; }
-            if(selectedOpt === questions[qIdx].ans) score += 10;
+            if(selectedOpt === null) { 
+                alert("Please select an option!"); 
+                return; 
+            }
+            if(selectedOpt === selectedQuestions[qIdx].ans) {
+                score += 10;
+            }
             document.getElementById('scoreDisplay').textContent = score;
             qIdx++;
             loadQ();
         }
+
+        function finishQuiz(message) {
+            clearInterval(timerInterval);
+            alert(`${message}\nYour Score: ${score} / ${selectedQuestions.length * 10}`);
+            window.location.href = "live.html";
+        }
     </script>
-     <footer style="background-color: #0b132b; color: #ffffff; padding: 40px 20px; font-family: sans-serif;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
-        
-        <!-- We Are Section -->
-        <div style="flex: 1; min-width: 250px;">
-            <h3 style="color: #ffffff; margin-bottom: 15px;">🏢 We Are</h3>
-            <p style="color: #a0aec0; line-height: 1.6;">
-                Department of ICT, Rajarata University of Sri Lanka (RUSL).
-            </p>
-        </div>
-
-        <!-- Quick Links Section -->
-        <div style="flex: 1; min-width: 200px;">
-            <h3 style="color: #ffffff; margin-bottom: 15px;">🔗 Quick Links</h3>
-            <ul style="list-style: none; padding: 0; line-height: 2;">
-                <li><a href="index.html" style="color: #a0aec0; text-decoration: none;">Home</a></li>
-                <li><a href="#" style="color: #a0aec0; text-decoration: none;">About Us</a></li>
-                <li><a href="#" style="color: #a0aec0; text-decoration: none;">Services</a></li>
-                <li><a href="#" style="color: #a0aec0; text-decoration: none;">Contact Us</a></li>
-            </ul>
-        </div>
-
-        <!-- Contact Us Section -->
-        <div style="flex: 1; min-width: 280px;">
-            <h3 style="color: #ffffff; margin-bottom: 15px;">✉️ Contact Us</h3>
-            <p style="color: #a0aec0; margin: 5px 0;">📧 ITT2024026@tec.rjt.ac.lk</p>
-            <p style="color: #a0aec0; margin: 5px 0;">📧 ITT2024045@tec.rjt.ac.lk</p>
-            <p style="color: #a0aec0; margin: 5px 0;">📞 +94 741258667</p>
-            <p style="color: #a0aec0; margin: 5px 0;">📍 Mihintale 50300, Sri Lanka</p>
-        </div>
-
-    </div>
-
-    <!-- Copyright -->
-    <div style="text-align: center; margin-top: 40px; border-top: 1px solid #1c2541; padding-top: 20px; color: #a0aec0; font-size: 14px;">
-        © 2026 TriviaStorm Hub. All rights reserved.
-    </div>
-</footer>
 </body>
 </html>
