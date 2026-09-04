@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TriviaStorm - Student Hub</title>
+    <link rel="stylesheet" href="footer.css">
     <style>
         :root {
             --primary-color: #1a2b42;
             --accent-color: #ff9900;
-            --bg-color: ##E7E5DF;
+            --bg-color: #E7E5DF;
             --card-bg: #E9F1F7;
             --border-color: #d1d9e6;
             --text-color: #1e293b;
@@ -23,9 +24,30 @@
         nav a:hover, nav a.active { background-color: rgba(255,255,255,0.4); }
         main { flex: 1; max-width: 900px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
         .card { background: var(--card-bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color); }
-        .flashcard { background: white; padding: 2rem; border-radius: 10px; border: 2px solid var(--accent-color); text-align: center; margin-top: 1rem; cursor: pointer; min-height: 180px; display: flex; flex-direction: column; justify-content: center; }
+        
+        /* Flashcard Styles */
+        .flashcard-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .flashcard { background: white; width: 100%; padding: 2rem; border-radius: 10px; border: 2px solid var(--accent-color); text-align: center; cursor: pointer; min-height: 180px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: transform 0.2s; }
+        .flashcard:active { transform: scale(0.99); }
+        .fc-controls { display: flex; gap: 1rem; align-items: center; justify-content: center; width: 100%; }
+        .btn-fc { background: var(--primary-color); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        
+        /* Filter Tabs */
+        .tab-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .tab-btn { padding: 0.5rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--primary-color); }
+        .tab-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        /* Action Bar */
+        .action-bar { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+        .btn-action { padding: 0.6rem 1.2rem; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-cheat { background: #0284c7; color: white; }
+        .btn-pdf { background: #059669; color: white; }
+
+        /* Modal Popup */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-body { background: white; padding: 2rem; border-radius: 12px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+
         .cert { border: 8px double var(--primary-color); padding: 2rem; background: #fffdfa; text-align: center; margin-top: 1.5rem; }
-        footer { background-color: var(--footer-bg); padding: 1.5rem; text-align: center; margin-top: auto; }
     </style>
 </head>
 <body>
@@ -40,69 +62,200 @@
     </header>
 
     <main>
-        <div class="card">
+        <div class="card" id="printableArea">
             <h2>🎓 Student Academic Hub</h2>
             
+            <!-- Quick Tools -->
+            <div class="action-bar">
+                <button class="btn-action btn-cheat" onclick="openModal()">📖 Quick Formula / Cheat Sheet</button>
+                <button class="btn-action btn-pdf" onclick="window.print()">📥 Download Notes (PDF)</button>
+            </div>
+
+            <!-- Flashcards -->
             <h3 style="margin-top: 1.5rem;">🎴 Academic Flashcards</h3>
-            <div class="flashcard" onclick="toggleFC()">
-                <p style="font-size:0.85rem; color:#64748b;">(Click to flip card)</p>
-                <h3 id="q">What constant value of gravity (g) is used in physics mechanics?</h3>
-                <p id="a" style="display:none; color: #059669; font-weight: bold; margin-top: 0.8rem;">Always use g = 10 m/s² for calculations.</p>
+            <div class="flashcard-container">
+                <div class="flashcard" onclick="toggleFC()">
+                    <p style="font-size:0.85rem; color:#64748b;">(Click to flip card)</p>
+                    <h3 id="fcQuestion">Loading cards...</h3>
+                    <p id="fcAnswer" style="display:none; color: #059669; font-weight: bold; margin-top: 0.8rem;"></p>
+                </div>
+                <div class="fc-controls">
+                    <button class="btn-fc" onclick="prevFC()">&larr; Previous</button>
+                    <span id="fcTracker" style="font-weight: bold; color: var(--primary-color);">0 / 0</span>
+                    <button class="btn-fc" onclick="nextFC()">Next &rarr;</button>
+                </div>
             </div>
 
+            <!-- Notes with Category Filter -->
             <h3 style="margin-top: 2rem;">📚 Core Study Notes</h3>
-            <div style="background: white; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                <h4>Physics Mechanics & Dynamics</h4>
-                <p style="color:#475569; margin-top:0.4rem;">Vertical displacement formula: y = v₀t - ½gt² where standard <strong>g = 10 m/s²</strong>.</p>
-                <h4 style="margin-top:0.8rem;">C Dynamic Memory</h4>
-                <p style="color:#475569; margin-top:0.4rem;">Functions <code>malloc()</code> and <code>free()</code> are provided by <code>&lt;stdlib.h&gt;</code>.</p>
+            <div class="tab-group">
+                <button class="tab-btn active" onclick="filterNotes('all', this)">All Topics</button>
+                <button class="tab-btn" onclick="filterNotes('physics', this)">Physics Mechanics</button>
+                <button class="tab-btn" onclick="filterNotes('cprog', this)">C Programming</button>
+                <button class="tab-btn" onclick="filterNotes('math', this)">Mathematics</button>
             </div>
 
+            <div style="background: white; padding: 1.2rem; border-radius: 8px; margin-top: 0.8rem;">
+                <div class="note-item physics">
+                    <h4 style="color: var(--primary-color);">Physics Mechanics & Dynamics</h4>
+                    <p style="color:#475569; margin-top:0.4rem;">Vertical displacement formula: <code>y = v₀t - ½gt²</code> where standard <strong>g = 10 m/s²</strong>.</p>
+                </div>
+
+                <div class="note-item cprog" style="margin-top:1rem;">
+                    <h4 style="color: var(--primary-color);">C Dynamic Memory Management</h4>
+                    <p style="color:#475569; margin-top:0.4rem;">Memory functions <code>malloc()</code>, <code>calloc()</code>, and <code>free()</code> are provided by <code>&lt;stdlib.h&gt;</code> header.</p>
+                </div>
+
+                <div class="note-item math" style="margin-top:1rem;">
+                    <h4 style="color: var(--primary-color);">Algebra & Polynomials</h4>
+                    <p style="color:#475569; margin-top:0.4rem;">According to the <strong>Remainder Theorem</strong>, when polynomial f(x) is divided by (x - a), the remainder is equal to f(a).</p>
+                </div>
+            </div>
+
+            <!-- Certificate Section -->
             <h3 style="margin-top: 2rem;">🎖️ Certificate Generator</h3>
             <div class="cert">
                 <h2 style="color:var(--primary-color);">CERTIFICATE OF ACHIEVEMENT</h2>
-                <p style="margin-top:0.5rem;">This certifies that <strong>Alex</strong> has passed the Academic Assessment.</p>
+                <p style="margin-top:0.5rem;">This certifies that <strong id="certUser">Student Name</strong> has passed the Academic Assessment.</p>
             </div>
         </div>
     </main>
 
+    <!-- Formula / Cheat Sheet Modal Popup -->
+    <div class="modal-overlay" id="formulaModal">
+        <div class="modal-body">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📐 Formula Cheat Sheet</h2>
+            <ul style="line-height: 1.8; padding-left: 1.2rem; color: #334155;">
+                <li><strong>Gravity Acceleration:</strong> g = 10 m/s²</li>
+                <li><strong>Rotational Motion:</strong> v = r × ω</li>
+                <li><strong>Centripetal Acceleration:</strong> a = v² / r</li>
+                <li><strong>Quadratic Formula:</strong> x = (-b ± √(b² - 4ac)) / (2a)</li>
+                <li><strong>C Pointer Dereference:</strong> *ptr (Access value stored at address)</li>
+            </ul>
+            <button class="btn-fc" style="margin-top: 1.5rem; width: 100%;" onclick="closeModal()">Close Cheat Sheet</button>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <link rel="stylesheet" href="footer.css">
+        <div class="footer-container">
+            <div class="footer-section about">
+                <h3>Your Brand Name</h3>
+                <p>Department of ICT RUSL.</p>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>Contact Us</h3>
+                <p><strong>Email:</strong> ITT2024026@tec.rjt.ac.lk / ITT2024045@tec.rjt.ac.lk</p>
+                <p><strong>Phone:</strong> +94 741258667</p>
+                <p><strong>Location:</strong> Rajarata University of Sri Lanka, Mihintale 50300, Sri Lanka</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; TriviaStorm Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
+        let flashcards = [];
+        let currentFC = 0;
+
+        // Load logged in username and fetch Flashcards from DB on Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUsername = localStorage.getItem('username') || 'Student';
+            const certUser = document.getElementById('certUser');
+            if (certUser) certUser.textContent = savedUsername;
+
+            fetchFlashcards();
+        });
+
+        // Fetch Flashcards dynamically from MySQL Database via PHP
+        async function fetchFlashcards() {
+            try {
+                const response = await fetch('get_flashcards.php');
+                const data = await response.json();
+
+                if (Array.isArray(data) && data.length > 0) {
+                    flashcards = data;
+                    currentFC = 0;
+                    updateFlashcard();
+                } else {
+                    document.getElementById('fcQuestion').textContent = "No flashcards found in Database.";
+                }
+            } catch (error) {
+                console.error("Error fetching flashcards:", error);
+                // Fallback default cards if database connection/fetch fails
+                flashcards = [
+                    { question: "What constant value of gravity (g) is used in physics mechanics?", answer: "Always use g = 10 m/s² for calculations." },
+                    { question: "Which C header file is required for dynamic memory functions?", answer: "<stdlib.h> header file." },
+                    { question: "What is the remainder when polynomial f(x) is divided by (x - a)?", answer: "The remainder is equal to f(a)." }
+                ];
+                updateFlashcard();
+            }
+        }
+
+        function updateFlashcard() {
+            if (flashcards.length === 0) return;
+
+            const card = flashcards[currentFC];
+            document.getElementById('fcQuestion').textContent = card.question || card.q;
+            document.getElementById('fcAnswer').textContent = card.answer || card.a;
+            document.getElementById('fcAnswer').style.display = 'none';
+            document.getElementById('fcTracker').textContent = `${currentFC + 1} / ${flashcards.length}`;
+        }
+
         function toggleFC() {
-            const a = document.getElementById('a');
+            if (flashcards.length === 0) return;
+            const a = document.getElementById('fcAnswer');
             a.style.display = a.style.display === 'none' ? 'block' : 'none';
         }
+
+        function nextFC() {
+            if (flashcards.length === 0) return;
+            currentFC = (currentFC + 1) % flashcards.length;
+            updateFlashcard();
+        }
+
+        function prevFC() {
+            if (flashcards.length === 0) return;
+            currentFC = (currentFC - 1 + flashcards.length) % flashcards.length;
+            updateFlashcard();
+        }
+
+        // Category Filter Logic
+        function filterNotes(category, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const items = document.querySelectorAll('.note-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Cheat Sheet Modal Logic
+        function openModal() {
+            document.getElementById('formulaModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('formulaModal').style.display = 'none';
+        }
     </script>
-     <footer class="site-footer">
-        <link rel="stylesheet" href="footer.css">
-    <div class="footer-container">
-      
-      <div class="footer-section about">
-        <h3>Your Brand Name</h3>
-        <p>Department of ICT RUSL.</p>
-      </div>
-
-      <div class="footer-section links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section contact">
-        <h3>Contact Us</h3>
-        <p><strong>Email:</strong>----ITT2024026@tec.rjt.ac.lk----ITT2024045@tec.rjt.ac.lk---- </p>
-        <p><strong>Phone:</strong> +94 741258667</p>
-        <p><strong>Location:</strong>Rajarata University of Sri Lanka,Mihinthale 50300,Sri Lanka</p>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; TriviaStorm Hub. All rights reserved.</p>
-    </div>
-  </footer>
 </body>
 </html>
